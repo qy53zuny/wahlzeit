@@ -45,6 +45,18 @@ public class EmailAddressTest extends TestCase {
 		assertTrue(createEmailAddressIgnoreException("bingo.bongo@bongo.com"));
 		assertTrue(createEmailAddressIgnoreException("bingo+bongo@bango"));
 	}
+	
+	public void testEmailAdressIsEqual() {
+		assertTrue(EmailAddress.EMPTY.isEqual(EmailAddress.EMPTY));
+		assertTrue(EmailAddress.getFromString("asdf@asdf.com").isEqual(EmailAddress.getFromString("asdf@asdf.com")));
+		//assertTrue(EmailAddress.getFromString("asdf@asdf.com").isEqual(EmailAddress.getFromString("ASDF@asdf.com")));
+		//assertTrue(EmailAddress.getFromString("asdf@asdf.com").isEqual(EmailAddress.getFromString(" asdf@asdf.com ")));
+		
+		assertFalse(EmailAddress.EMPTY.isEqual(EmailAddress.getFromString("asdf@asdf.com")));
+		assertFalse(EmailAddress.getFromString("asdf@asdf.com").isEqual(EmailAddress.getFromString("qwer@asdf.com")));
+		assertFalse(EmailAddress.getFromString("asdf@asdf.com").isEqual(EmailAddress.getFromString("asdf@qwer.com")));
+		assertFalse(EmailAddress.getFromString("asdf@asdf.com").isEqual(EmailAddress.getFromString("asdf@asdf.de")));		
+	}
 
 	/**
 	 *
