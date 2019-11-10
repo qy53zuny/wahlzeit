@@ -26,7 +26,6 @@ public class LandscapePhotoFactoryTest {
 		LandscapePhoto photo = factory.createPhoto(id);
 		Assert.assertNotNull(photo);
 		Assert.assertEquals(id, photo.getId());
-		Assert.assertEquals(photo, factory.loadPhoto(id));
 	}
 
 }
