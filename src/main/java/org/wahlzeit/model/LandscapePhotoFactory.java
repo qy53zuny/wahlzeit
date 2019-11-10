@@ -40,6 +40,11 @@ public class LandscapePhotoFactory extends PhotoFactory {
         return new LandscapePhoto(id);
     }
 	
+	public LandscapePhoto createPhoto(String type, String weather, boolean isDay)
+    {
+        return new LandscapePhoto(type, weather, isDay);
+    }
+	
 	public LandscapePhoto createPhoto(PhotoId id, String type, String weather, boolean isDay)
     {
         return new LandscapePhoto(id, type, weather, isDay);
