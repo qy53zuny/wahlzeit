@@ -51,6 +51,22 @@ public class PhotoUtil {
 
 		return result;
 	}
+	
+	/**
+	 * @methodtype creation
+	 */
+	public static LandscapePhoto createLandscapePhoto(String filename, PhotoId id, Image uploadedImage) throws Exception {
+		LandscapePhoto result = LandscapePhotoFactory.getInstance().createPhoto(id);
+		result.setEnding(filename.substring(filename.lastIndexOf(".") + 1));
+
+		createImageFiles(uploadedImage, result);
+
+		int sourceWidth = uploadedImage.getWidth();
+		int sourceHeight = uploadedImage.getHeight();
+		result.setWidthAndHeight(sourceWidth, sourceHeight);
+
+		return result;
+	}
 
 	/**
 	 *
