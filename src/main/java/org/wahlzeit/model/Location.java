@@ -8,12 +8,12 @@ public class Location {
 	
 	public Location() {
 		this.name = "";
-		this.coordinate = new Coordinate();
+		this.coordinate = new CartesianCoordinate();
 	}
 
 	public Location(String name) {
 		this.name = name;
-		this.coordinate = new Coordinate();
+		this.coordinate = new CartesianCoordinate();
 	}
 	
 	public Location(Coordinate coordinate) {

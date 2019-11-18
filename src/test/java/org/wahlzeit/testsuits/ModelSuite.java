@@ -11,6 +11,7 @@ import org.wahlzeit.model.persistence.*;
 		DatastoreAdapterTest.class,
 
         AccessRightsTest.class,
+        CoordinateTest.class,
         FlagReasonTest.class,
         GenderTest.class,
         GuestTest.class,
