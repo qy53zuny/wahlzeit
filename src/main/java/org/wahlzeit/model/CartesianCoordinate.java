@@ -3,7 +3,7 @@ package org.wahlzeit.model;
 public class CartesianCoordinate implements Coordinate {
 	
 	private double x,y,z;
-	private static final double EPSILON = 0.1;
+	private static final double EPSILON = 0.01;
 	
 	public CartesianCoordinate() {
 		setCoordinate(0.0, 0.0, 0.0);
