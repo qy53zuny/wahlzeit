@@ -1,9 +1,34 @@
 package org.wahlzeit.model;
 
-public class CartesianCoordinate implements Coordinate {
+public class CartesianCoordinate extends AbstractCoordinate {
 	
-	private double x,y,z;
-	private static final double EPSILON = 0.01;
+	private double x;
+	private double y;
+	private double z;
+	
+	public double getX() {
+		return x;
+	}
+
+	public void setX(double x) {
+		this.x = x;
+	}
+
+	public double getY() {
+		return y;
+	}
+
+	public void setY(double y) {
+		this.y = y;
+	}
+	
+	public double getZ() {
+		return y;
+	}
+
+	public void setZ(double y) {
+		this.y = y;
+	}
 	
 	public CartesianCoordinate() {
 		setCoordinate(0.0, 0.0, 0.0);
@@ -22,39 +47,6 @@ public class CartesianCoordinate implements Coordinate {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-	}
-	
-	@Override
-	public boolean isEqual(Coordinate coord) {
-		
-		if(coord==null) {
-			return false;
-		}
-		
-		CartesianCoordinate c = coord.asCartesianCoordinate();		
-		
-		if((Math.abs(x-c.x) < EPSILON) && (Math.abs(y-c.y) < EPSILON) && (Math.abs(z-c.z) < EPSILON)) {
-			return true;
-		}
-		
-		return false;
-	}
-	
-	@Override
-	public double getCartesianDistance(Coordinate coord) {
-		
-		if(coord == null) {
-			throw new IllegalArgumentException("Coordinate must not be null.");
-		}
-		
-		
-		CartesianCoordinate c = coord.asCartesianCoordinate();
-		
-		if(this.isEqual(c)) {
-			return 0;
-		}
-		
-		return Math.sqrt(Math.pow((c.x-this.x),2) + Math.pow((c.y-this.y),2) + Math.pow((c.z-this.z),2));
 	}
 	
 	@Override
@@ -77,7 +69,13 @@ public class CartesianCoordinate implements Coordinate {
 			c = cs.asCartesianCoordinate();
 		}
 		
-		return isEqual(c);
+		if(this.hashCode() == c.hashCode()) {
+			return isEqual(c);
+		}
+		else {
+			return false;
+		}
+		
 	}
 
 	@Override
@@ -94,11 +92,6 @@ public class CartesianCoordinate implements Coordinate {
 		return new SphericCoordinate(phi, theta, radius);
 	}
 
-
-	@Override
-	public double getCentralAngle(Coordinate c) {
-		return this.asSphericCoordinate().getCentralAngle(c);
-	}
 	
 	@Override
 	public int hashCode() {

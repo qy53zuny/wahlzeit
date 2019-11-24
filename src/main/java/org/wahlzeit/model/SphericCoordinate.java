@@ -1,10 +1,35 @@
 package org.wahlzeit.model;
 
-public class SphericCoordinate implements Coordinate {
+public class SphericCoordinate extends AbstractCoordinate {
 	
 	private double phi;
 	private double theta;
 	private double radius;
+	
+	public double getPhi() {
+		return phi;
+	}
+	
+	public void setPhi(double phi) {
+		this.phi = phi;
+	}
+	
+	public double getTheta() {
+		return theta;
+	}
+	
+	public void setTheta(double theta) {
+		this.theta = theta;
+	}
+	
+	public double getRadius() {
+		return radius;
+	}
+	
+	public void setRadius(double radius) {
+		this.radius = radius;
+	}
+	
 	
 	public SphericCoordinate() {
 		setCoordinate(0,0,0);
@@ -37,36 +62,6 @@ public class SphericCoordinate implements Coordinate {
 	@Override
 	public SphericCoordinate asSphericCoordinate() {
 		return this;
-	}
-
-	@Override
-	public double getCartesianDistance(Coordinate coordinate) {
-		if(coordinate == null) {
-			throw new IllegalArgumentException("Coordinate must not be null.");
-		}
-		
-		return this.asCartesianCoordinate().getCartesianDistance(coordinate);
-	}
-
-	@Override
-	public double getCentralAngle(Coordinate coordinate) {
-		if(coordinate == null) {
-			throw new IllegalArgumentException("Coordinate must not be null.");
-		}
-		
-		SphericCoordinate c = coordinate.asSphericCoordinate();
-		double phiDif = Math.abs(phi-c.phi);
-		double thetaDif = Math.abs(theta-c.theta);
-		double res = Math.sin(thetaDif/2);
-		res = res*res*Math.cos(phi)*Math.cos(c.phi) + Math.pow(Math.sin(phiDif/2), 2);
-		res = 2*Math.asin(Math.sqrt(res));
-		return res;
-	}
-
-	@Override
-	public boolean isEqual(Coordinate coordinate) {
-		
-		return this.asCartesianCoordinate().isEqual(coordinate);
 	}
 	
 	@Override
