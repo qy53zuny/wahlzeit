@@ -13,9 +13,15 @@ public class SphericCoordinate extends AbstractCoordinate {
 		return phi;
 	}
 	
-	public void setPhi(double phi) {
+	public void setPhi(double phi) throws IllegalArgumentException {
 		assertClassInvariants();
-		assertPhiValid(phi);
+		try {
+			assertPhiValid(phi);
+		}
+		catch(IllegalStateException e) {
+			throw new IllegalArgumentException("given paramter phi is not valid: "+e.getMessage());
+		}
+		
 		this.phi = phi;
 		assertClassInvariants();
 	}
@@ -25,9 +31,16 @@ public class SphericCoordinate extends AbstractCoordinate {
 		return theta;
 	}
 	
-	public void setTheta(double theta) {
+	public void setTheta(double theta)  throws IllegalArgumentException {
 		assertClassInvariants();
-		assertThetaValid(theta);
+		
+		try {
+			assertThetaValid(theta);
+		}
+		catch(IllegalStateException e) {
+			throw new IllegalArgumentException("given paramter theta is not valid: "+e.getMessage());
+		}
+		
 		this.theta = theta;
 		assertClassInvariants();
 	}
@@ -37,9 +50,16 @@ public class SphericCoordinate extends AbstractCoordinate {
 		return radius;
 	}
 	
-	public void setRadius(double radius) {
+	public void setRadius(double radius)  throws IllegalArgumentException {
 		assertClassInvariants();
-		assertRadiusValid(radius);
+		
+		try {
+			assertRadiusValid(radius);
+		}
+		catch(IllegalStateException e) {
+			throw new IllegalArgumentException("given paramter radius is not valid: "+e.getMessage());
+		}
+		
 		this.radius = radius;
 		assertClassInvariants();
 	}
@@ -50,10 +70,15 @@ public class SphericCoordinate extends AbstractCoordinate {
 		assertClassInvariants();
 	}
 
-	public SphericCoordinate(double phi, double theta, double radius) {
-		assertPhiValid(phi);
-		assertThetaValid(theta);
-		assertRadiusValid(radius);
+	public SphericCoordinate(double phi, double theta, double radius) throws IllegalArgumentException {
+		try {
+			assertPhiValid(phi);
+			assertThetaValid(theta);
+			assertRadiusValid(radius);
+		}
+		catch(IllegalStateException e) {
+			throw new IllegalArgumentException("a given parameter is not valid: "+e.getMessage());
+		}
 		
 		setCoordinate(phi, theta, radius);
 		assertClassInvariants();
@@ -64,10 +89,15 @@ public class SphericCoordinate extends AbstractCoordinate {
 		setCoordinate(c.phi, c.theta, c.radius);
 	}
 	
-	public void setCoordinate(double phi, double theta, double radius) {	
-		assertPhiValid(phi);
-		assertThetaValid(theta);
-		assertRadiusValid(radius);
+	public void setCoordinate(double phi, double theta, double radius) throws IllegalArgumentException {	
+		try {
+			assertPhiValid(phi);
+			assertThetaValid(theta);
+			assertRadiusValid(radius);
+		}
+		catch(IllegalStateException e) {
+			throw new IllegalArgumentException("a given parameter is not valid: "+e.getMessage());
+		}
 		
 		this.phi = phi;
 		this.theta = theta;
@@ -76,7 +106,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 	
 	@Override
-	public CartesianCoordinate asCartesianCoordinate() {
+	public CartesianCoordinate asCartesianCoordinate() throws IllegalStateException {
 		
 		assertClassInvariants();
 		
@@ -84,9 +114,9 @@ public class SphericCoordinate extends AbstractCoordinate {
 		double y = radius*Math.sin(phi)*Math.sin(theta);
 		double z = radius*Math.cos(theta);
 		
-		assertFinite(x);
-		assertFinite(y);
-		assertFinite(z);
+		CartesianCoordinate.assertValidCoordinateValue(x);
+		CartesianCoordinate.assertValidCoordinateValue(y);
+		CartesianCoordinate.assertValidCoordinateValue(z);
 		
 		assertClassInvariants();
 		
@@ -120,23 +150,42 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 	
 	
-	protected static void assertThetaValid(Double theta) {
-		assertValidAngle(theta);
+	protected static void assertThetaValid(Double theta) throws IllegalStateException {
+		try {
+			assertValidAngle(theta);
+		}
+		catch(IllegalStateException e) {
+			throw new IllegalStateException("theta is not a valid angle: "+e.getMessage());
+		}
+		
 	}
 	
-	protected static void assertPhiValid(Double phi) {
-		assertValidAngle(phi);
-		assertTrue(phi<=Math.PI);
+	protected static void assertPhiValid(Double phi) throws IllegalStateException {
+		try {
+			assertValidAngle(phi);
+		}
+		catch(IllegalStateException e) {
+			throw new IllegalStateException("phi is not a valid angle: "+e.getMessage());
+		}
+		
+		if(!(phi<=Math.PI)) {
+			throw new IllegalStateException("phi has to be <= PI");
+		}
 	}
 	
-	protected static void assertRadiusValid(Double r) {
-		assertFinite(r);
-		assertNotNan(r);
-		assertNonNegative(r);
+	protected static void assertRadiusValid(Double r) throws IllegalStateException {
+		try {
+			assertFinite(r);
+			assertNotNan(r);
+			assertNonNegative(r);
+		}
+		catch(IllegalStateException e) {
+			throw new IllegalStateException("radius has not a valid value: "+e.getMessage());
+		}
 	}
 
 	@Override
-	protected void assertClassInvariants() {
+	protected void assertClassInvariants() throws IllegalStateException {
 		assertThetaValid(this.theta);
 		assertPhiValid(this.phi);
 		assertRadiusValid(this.radius);

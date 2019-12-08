@@ -51,37 +51,37 @@ public class CoordinateTest {
 		assertFalse(cc2.equals(sc));
 	}
 	
-	@Test(expected = AssertionError.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testNonvalidSphericCoordinateValuePhi() {
 		SphericCoordinate sc = new SphericCoordinate();
 		sc.setCoordinate(2*Math.PI, 1, 1);
 	}
 	
-	@Test(expected = AssertionError.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testNonvalidSphericCoordinateValueTheta() {
 		SphericCoordinate sc = new SphericCoordinate();
 		sc.setCoordinate(1, -1, 1);
 	}
 	
-	@Test(expected = AssertionError.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testNonvalidSphericCoordinateValueRadius() {
 		SphericCoordinate sc = new SphericCoordinate();
 		sc.setCoordinate(Math.PI, 1, Double.NaN);
 	}
 	
-	@Test(expected = AssertionError.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testNonvalidCartesianCoordinateValueX() {
 		CartesianCoordinate sc = new CartesianCoordinate();
 		sc.setCoordinate(Double.NaN, 1, 1);
 	}
 	
-	@Test(expected = AssertionError.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testNonvalidCartesianCoordinateValueY() {
 		CartesianCoordinate sc = new CartesianCoordinate();
 		sc.setCoordinate(1, Double.POSITIVE_INFINITY, 1);
 	}
 	
-	@Test(expected = AssertionError.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testNonvalidCartesianCoordinateValueZ() {
 		CartesianCoordinate sc = new CartesianCoordinate();
 		sc.setCoordinate(1, 1, Double.NEGATIVE_INFINITY);

@@ -7,14 +7,20 @@ public abstract class AbstractCoordinate implements Coordinate {
 	private static final double EPSILON = 0.001;
 	
 	@Override
-	public double getCartesianDistance(Coordinate coord) {
+	public double getCartesianDistance(Coordinate coordinate) throws IllegalArgumentException, IllegalStateException {
 		
 		assertClassInvariants();
 		
-		assertCoordinateNotNull(coord);
+		try {
+			assertCoordinateNotNull(coordinate);
+		}
+		catch(NullPointerException e) {
+			throw new IllegalArgumentException("the given coord Paramter is null: "+e.getMessage());
+		}
+		
 		
 		CartesianCoordinate thisCartesian = this.asCartesianCoordinate();
-		CartesianCoordinate c = coord.asCartesianCoordinate();
+		CartesianCoordinate c = coordinate.asCartesianCoordinate();
 		
 		if(this.isEqual(c)) {
 			return 0;
@@ -32,11 +38,16 @@ public abstract class AbstractCoordinate implements Coordinate {
 	}
 
 	@Override
-	public double getCentralAngle(Coordinate coordinate) {
+	public double getCentralAngle(Coordinate coordinate) throws IllegalArgumentException, IllegalStateException {
 		
 		assertClassInvariants();
 		
-		assertCoordinateNotNull(coordinate);
+		try {
+			assertCoordinateNotNull(coordinate);
+		}
+		catch(NullPointerException e) {
+			throw new IllegalArgumentException("the given coordinate Paramter is null: "+e.getMessage());
+		}
 		
 		SphericCoordinate thisSpheric = this.asSphericCoordinate();
 		SphericCoordinate c = coordinate.asSphericCoordinate();
@@ -73,27 +84,37 @@ public abstract class AbstractCoordinate implements Coordinate {
 		return false;
 	}
 	
-	protected static void assertCoordinateNotNull(Coordinate c) {
-		assertNotNull(c);
+	protected static void assertCoordinateNotNull(Coordinate c) throws NullPointerException {
+		if(c == null) {
+			throw new NullPointerException("given Coordinate is null");
+		}
 	}
 	
-	protected static void assertNotNan(Double d) {
-		assertFalse(Double.isNaN(d));
+	protected static void assertNotNan(Double d) throws IllegalStateException{
+		if(Double.isNaN(d)) {
+			throw new IllegalStateException("double value is NaN");
+		}
 	}
 	
-	protected static void assertFinite(Double d) {
-		assertTrue(Double.isFinite(d));
+	protected static void assertFinite(Double d) throws IllegalStateException{
+		if(!Double.isFinite(d)) {
+			throw new IllegalStateException("double value is infinite");
+		}
 	}
 	
-	protected static void assertNonNegative(Double d) {
-		assertTrue(d>=0);
+	protected static void assertNonNegative(Double d) throws IllegalStateException {
+		if(!(d>=0)) {
+			throw new IllegalStateException("double value is negative: "+d.toString());
+		}
 	}
 	
-	protected static void assertValidAngle(Double angle) {
+	protected static void assertValidAngle(Double angle) throws IllegalStateException{
 		assertNotNan(angle);
 		assertFinite(angle);
 		assertNonNegative(angle);
-		assertTrue(angle<=2*Math.PI);
+		if(!(angle<=2*Math.PI)) {
+			throw new IllegalStateException("value of angle > 360°");
+		}
 	}
 	
 	protected abstract void assertClassInvariants();

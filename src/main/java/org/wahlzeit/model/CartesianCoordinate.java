@@ -1,7 +1,5 @@
 package org.wahlzeit.model;
 
-import static org.junit.Assert.*;
-
 public class CartesianCoordinate extends AbstractCoordinate {
 	
 	private double x;
@@ -13,9 +11,9 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		return x;
 	}
 
-	public void setX(double x) {
+	public void setX(double x) throws IllegalArgumentException {
 		assertClassInvariants();
-		assertValidValue(x);		
+		assertParamterValueIsValid(x, "x");	
 		this.x = x;
 		assertClassInvariants();
 	}
@@ -25,9 +23,9 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		return y;
 	}
 
-	public void setY(double y) {
+	public void setY(double y) throws IllegalArgumentException {
 		assertClassInvariants();
-		assertValidValue(y);		
+		assertParamterValueIsValid(y, "y");		
 		this.y = y;
 		assertClassInvariants();
 	}
@@ -37,9 +35,9 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		return y;
 	}
 
-	public void setZ(double z) {
+	public void setZ(double z) throws IllegalArgumentException {
 		assertClassInvariants();
-		assertValidValue(z);		
+		assertParamterValueIsValid(z, "z");		
 		this.z = z;
 		assertClassInvariants();
 	}
@@ -60,11 +58,11 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		assertClassInvariants();
 	}
 	
-	public void setCoordinate(double x, double y, double z) {
+	public void setCoordinate(double x, double y, double z) throws IllegalArgumentException {
 		assertClassInvariants();
-		assertValidValue(x);
-		assertValidValue(y);
-		assertValidValue(z);
+		assertParamterValueIsValid(x, "x");	
+		assertParamterValueIsValid(y, "y");	
+		assertParamterValueIsValid(z, "z");	
 		
 		this.x = x;
 		this.y = y;
@@ -152,16 +150,43 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		System.out.println("z: "+z);
 	}
 	
-	protected static void assertValidValue(Double val) {
+	protected static void assertValidCoordinateValue(Double val) throws IllegalStateException {
 		assertNotNan(val);
 		assertFinite(val);
 	}
 	
+	protected void assertParamterValueIsValid(Double value, String name) throws IllegalArgumentException {
+		try {
+			assertValidCoordinateValue(value);
+		}
+		catch(IllegalStateException e) {
+			throw new IllegalArgumentException("Given Argumen "+name+" is not valid: "+e.getMessage());
+		}
+				
+	}
+	
 	@Override
-	protected void assertClassInvariants() {
-		assertValidValue(this.x);
-		assertValidValue(this.y);
-		assertValidValue(this.z);
+	protected void assertClassInvariants() throws IllegalStateException {
+		try {
+			assertValidCoordinateValue(this.x);
+		}
+		catch(IllegalStateException e) {
+			throw new IllegalStateException("x has an invalid value: "+e.getMessage());
+		}
+		
+		try {
+			assertValidCoordinateValue(this.y);
+		}
+		catch(IllegalStateException e) {
+			throw new IllegalStateException("y has an invalid value: "+e.getMessage());
+		}
+		
+		try {
+			assertValidCoordinateValue(this.z);
+		}
+		catch(IllegalStateException e) {
+			throw new IllegalStateException("z has an invalid value: "+e.getMessage());
+		}
 	}
 	
 }

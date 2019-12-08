@@ -20,15 +20,19 @@ public class LandscapePhoto extends Photo {
 		super(myId);
 	}
 	
-	public LandscapePhoto(String type, String weather, boolean isDay) {
+	public LandscapePhoto(String type, String weather, boolean isDay) throws IllegalArgumentException {
 		super();
+		assertWeather(weather);
+		assertType(type);
 		this.setType(type);
 		this.setWeather(weather);
 		this.setDay(isDay);
 	}
 	
-	public LandscapePhoto(PhotoId myId, String type, String weather, boolean isDay) {
+	public LandscapePhoto(PhotoId myId, String type, String weather, boolean isDay) throws IllegalArgumentException {
 		super(myId);
+		assertWeather(weather);
+		assertType(type);
 		this.setType(type);
 		this.setWeather(weather);
 		this.setDay(isDay);
@@ -38,7 +42,8 @@ public class LandscapePhoto extends Photo {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(String type) throws IllegalArgumentException {
+		assertType(type);
 		this.type = type;
 	}
 
@@ -46,7 +51,8 @@ public class LandscapePhoto extends Photo {
 		return weather;
 	}
 
-	public void setWeather(String weather) {
+	public void setWeather(String weather) throws IllegalArgumentException {
+		assertWeather(weather);
 		this.weather = weather;
 	}
 
@@ -56,5 +62,21 @@ public class LandscapePhoto extends Photo {
 
 	public void setDay(boolean isDay) {
 		this.isDay = isDay;
+	}
+	
+
+	protected void assertType(String type) throws IllegalArgumentException {
+		if(type == null) {
+			throw new IllegalArgumentException("type cannot be null");
+		}
+	}
+	
+	protected void assertWeather(String weather) throws IllegalArgumentException {
+		if(weather == null) {
+			throw new IllegalArgumentException("weather must be set and cannot be null");
+		}
+		if(weather == "") {
+			throw new IllegalArgumentException("weather must be set and cannot be empty");
+		}
 	}
 }

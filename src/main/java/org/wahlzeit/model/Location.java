@@ -16,7 +16,7 @@ public class Location {
 		this.coordinate = new CartesianCoordinate();
 	}
 	
-	public Location(Coordinate coordinate) {
+	public Location(Coordinate coordinate) throws IllegalArgumentException {
 		this.name = "";
 		if(coordinate == null) {
 			throw new IllegalArgumentException("Coordinate must not be null.");
@@ -24,7 +24,7 @@ public class Location {
 		this.coordinate = coordinate;
 	}
 	
-	public Location(Coordinate coordinate, String name) {
+	public Location(Coordinate coordinate, String name) throws IllegalArgumentException {
 		this.name = name;
 		if(coordinate == null) {
 			throw new IllegalArgumentException("Coordinate must not be null.");
