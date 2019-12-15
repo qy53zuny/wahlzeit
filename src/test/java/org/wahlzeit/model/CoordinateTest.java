@@ -10,7 +10,7 @@ public class CoordinateTest {
 	
 	@Test
 	public void testCoordinateCasting() {
-		CartesianCoordinate cc = new CartesianCoordinate(1,2,3);
+		CartesianCoordinate cc = CartesianCoordinate.getInstance(1,2,3);
 		SphericCoordinate sc = cc.asSphericCoordinate();
 		CartesianCoordinate cc2 = sc.asCartesianCoordinate();
 		
@@ -27,7 +27,7 @@ public class CoordinateTest {
 		int b = 2;
 		int c = 3;
 		
-		SphericCoordinate sc = new SphericCoordinate(a,b,c);
+		SphericCoordinate sc = SphericCoordinate.getInstance(a,b,c);
 		assertTrue(sc.getCentralAngle(sc) == 0);
 	}
 	
@@ -37,12 +37,12 @@ public class CoordinateTest {
 		int b = 2;
 		int c = 3;
 		
-		CartesianCoordinate cc = new CartesianCoordinate(a,b,c);
-		SphericCoordinate sc = new SphericCoordinate(cc);
+		CartesianCoordinate cc = CartesianCoordinate.getInstance(a,b,c);
+		SphericCoordinate sc = SphericCoordinate.getInstance(cc);
 		
-		CartesianCoordinate cc2 = new CartesianCoordinate(b,a,c);
+		CartesianCoordinate cc2 = CartesianCoordinate.getInstance(b,a,c);
 		
-		assertFalse(sc.asCartesianCoordinate() == cc);
+		assertTrue(sc.asCartesianCoordinate() == cc);
 		assertTrue(sc.asCartesianCoordinate().hashCode() == cc.hashCode());
 		assertEquals(cc, sc);
 		
@@ -53,38 +53,38 @@ public class CoordinateTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testNonvalidSphericCoordinateValuePhi() {
-		SphericCoordinate sc = new SphericCoordinate();
-		sc.setCoordinate(2*Math.PI, 1, 1);
+		SphericCoordinate sc = SphericCoordinate.getInstance();
+		sc = SphericCoordinate.getInstance(2*Math.PI, 1, 1);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testNonvalidSphericCoordinateValueTheta() {
-		SphericCoordinate sc = new SphericCoordinate();
-		sc.setCoordinate(1, -1, 1);
+		SphericCoordinate sc = SphericCoordinate.getInstance();
+		sc = SphericCoordinate.getInstance(1, -1, 1);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testNonvalidSphericCoordinateValueRadius() {
-		SphericCoordinate sc = new SphericCoordinate();
-		sc.setCoordinate(Math.PI, 1, Double.NaN);
+		SphericCoordinate sc = SphericCoordinate.getInstance();
+		sc = SphericCoordinate.getInstance(Math.PI, 1, Double.NaN);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testNonvalidCartesianCoordinateValueX() {
-		CartesianCoordinate sc = new CartesianCoordinate();
-		sc.setCoordinate(Double.NaN, 1, 1);
+		CartesianCoordinate cc = CartesianCoordinate.getInstance();
+		cc = CartesianCoordinate.getInstance(Double.NaN, 1, 1);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testNonvalidCartesianCoordinateValueY() {
-		CartesianCoordinate sc = new CartesianCoordinate();
-		sc.setCoordinate(1, Double.POSITIVE_INFINITY, 1);
+		CartesianCoordinate cc = CartesianCoordinate.getInstance();
+		cc = CartesianCoordinate.getInstance(1, Double.POSITIVE_INFINITY, 1);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testNonvalidCartesianCoordinateValueZ() {
-		CartesianCoordinate sc = new CartesianCoordinate();
-		sc.setCoordinate(1, 1, Double.NEGATIVE_INFINITY);
+		CartesianCoordinate cc = CartesianCoordinate.getInstance();
+		cc = CartesianCoordinate.getInstance(1, 1, Double.NEGATIVE_INFINITY);
 	}
 	
 }

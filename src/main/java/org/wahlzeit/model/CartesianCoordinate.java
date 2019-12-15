@@ -1,64 +1,82 @@
 package org.wahlzeit.model;
 
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class CartesianCoordinate extends AbstractCoordinate {
 	
 	private double x;
 	private double y;
 	private double z;
+	private static ConcurrentHashMap<Integer, CartesianCoordinate> objects = new ConcurrentHashMap<>();
 	
 	public double getX() {
 		assertClassInvariants();
 		return x;
 	}
 
-	public void setX(double x) throws IllegalArgumentException {
-		assertClassInvariants();
-		assertParamterValueIsValid(x, "x");	
-		this.x = x;
-		assertClassInvariants();
-	}
+//	public void setX(double x) throws IllegalArgumentException {
+//		assertClassInvariants();
+//		assertParamterValueIsValid(x, "x");	
+//		this.x = x;
+//		assertClassInvariants();
+//	}
 
 	public double getY() {
 		assertClassInvariants();
 		return y;
 	}
 
-	public void setY(double y) throws IllegalArgumentException {
-		assertClassInvariants();
-		assertParamterValueIsValid(y, "y");		
-		this.y = y;
-		assertClassInvariants();
-	}
+//	public void setY(double y) throws IllegalArgumentException {
+//		assertClassInvariants();
+//		assertParamterValueIsValid(y, "y");		
+//		this.y = y;
+//		assertClassInvariants();
+//	}
 	
 	public double getZ() {
 		assertClassInvariants();
 		return y;
 	}
 
-	public void setZ(double z) throws IllegalArgumentException {
-		assertClassInvariants();
-		assertParamterValueIsValid(z, "z");		
-		this.z = z;
-		assertClassInvariants();
-	}
+//	public void setZ(double z) throws IllegalArgumentException {
+//		assertClassInvariants();
+//		assertParamterValueIsValid(z, "z");		
+//		this.z = z;
+//		assertClassInvariants();
+//	}
 	
-	public CartesianCoordinate() {
+	private CartesianCoordinate() {
 		setCoordinate(0.0, 0.0, 0.0);
 		assertClassInvariants();
 	}
 	
-	public CartesianCoordinate(double x, double y, double z) {
+	private CartesianCoordinate(double x, double y, double z) {
 		setCoordinate(x,y,z);
 		assertClassInvariants();
 	}
+
 	
-	public CartesianCoordinate(Coordinate coord) {
+	private CartesianCoordinate(Coordinate coord) {
 		CartesianCoordinate c = coord.asCartesianCoordinate();
 		setCoordinate(c.x, c.y, c.z);
 		assertClassInvariants();
 	}
 	
-	public void setCoordinate(double x, double y, double z) throws IllegalArgumentException {
+	public static CartesianCoordinate getInstance() {
+		return getInstance(0,0,0);
+	}
+	
+	public static CartesianCoordinate getInstance(Coordinate coord) {
+		return coord.asCartesianCoordinate();
+	}
+	
+	public static CartesianCoordinate getInstance(double x, double y, double z) {
+		int hash = Objects.hash(x, y, z);
+		return objects.computeIfAbsent(hash, key -> new CartesianCoordinate(x, y, z));
+	}
+	
+	private void setCoordinate(double x, double y, double z) throws IllegalArgumentException {
 		assertClassInvariants();
 		assertParamterValueIsValid(x, "x");	
 		assertParamterValueIsValid(y, "y");	
@@ -116,6 +134,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	public SphericCoordinate asSphericCoordinate() {
 		assertClassInvariants();
 		
+		
 		double radius = Math.sqrt(x*x + y*y + z*z);
 		double phi = Math.atan2(y, x);
 		double theta = Math.acos(z/radius);
@@ -125,22 +144,14 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		SphericCoordinate.assertRadiusValid(radius);
 		
 		assertClassInvariants();
-		return new SphericCoordinate(phi, theta, radius);
+		return SphericCoordinate.getInstance(phi, theta, radius);
+		
 	}
 
 	
 	@Override
 	public int hashCode() {
-		assertClassInvariants();
-		final int prime = 41;
-		int result = 1;
-		result = prime*result + Double.hashCode(x);
-		result = prime*result + Double.hashCode(y);
-		result = prime*result + Double.hashCode(z);
-		
-		assertClassInvariants();
-		return result;
-		
+		return Objects.hash(x, y, z);
 	}
 	
 	public void printCoords() {

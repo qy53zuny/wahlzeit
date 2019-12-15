@@ -7,6 +7,18 @@ public abstract class AbstractCoordinate implements Coordinate {
 	private static final double EPSILON = 0.001;
 	
 	@Override
+	protected Object clone() {
+		return this;
+	}
+	
+	public boolean equals(Object o) {
+		return this == o;
+	}
+	
+	@Override
+	abstract public int hashCode();
+	
+	@Override
 	public double getCartesianDistance(Coordinate coordinate) throws IllegalArgumentException, IllegalStateException {
 		
 		assertClassInvariants();

@@ -8,12 +8,12 @@ public class Location {
 	
 	public Location() {
 		this.name = "";
-		this.coordinate = new CartesianCoordinate();
+		this.coordinate = CartesianCoordinate.getInstance(0,0,0);
 	}
 
 	public Location(String name) {
 		this.name = name;
-		this.coordinate = new CartesianCoordinate();
+		this.coordinate = CartesianCoordinate.getInstance(0,0,0);
 	}
 	
 	public Location(Coordinate coordinate) throws IllegalArgumentException {

@@ -2,75 +2,80 @@ package org.wahlzeit.model;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class SphericCoordinate extends AbstractCoordinate {
 	
 	private double phi;
 	private double theta;
 	private double radius;
 	
+	private static ConcurrentHashMap<Integer, SphericCoordinate> objects = new ConcurrentHashMap<>();
+	
 	public double getPhi() {
 		assertClassInvariants();
 		return phi;
 	}
 	
-	public void setPhi(double phi) throws IllegalArgumentException {
-		assertClassInvariants();
-		try {
-			assertPhiValid(phi);
-		}
-		catch(IllegalStateException e) {
-			throw new IllegalArgumentException("given paramter phi is not valid: "+e.getMessage());
-		}
-		
-		this.phi = phi;
-		assertClassInvariants();
-	}
+//	public void setPhi(double phi) throws IllegalArgumentException {
+//		assertClassInvariants();
+//		try {
+//			assertPhiValid(phi);
+//		}
+//		catch(IllegalStateException e) {
+//			throw new IllegalArgumentException("given paramter phi is not valid: "+e.getMessage());
+//		}
+//		
+//		this.phi = phi;
+//		assertClassInvariants();
+//	}
 	
 	public double getTheta() {
 		assertClassInvariants();
 		return theta;
 	}
 	
-	public void setTheta(double theta)  throws IllegalArgumentException {
-		assertClassInvariants();
-		
-		try {
-			assertThetaValid(theta);
-		}
-		catch(IllegalStateException e) {
-			throw new IllegalArgumentException("given paramter theta is not valid: "+e.getMessage());
-		}
-		
-		this.theta = theta;
-		assertClassInvariants();
-	}
+//	public void setTheta(double theta)  throws IllegalArgumentException {
+//		assertClassInvariants();
+//		
+//		try {
+//			assertThetaValid(theta);
+//		}
+//		catch(IllegalStateException e) {
+//			throw new IllegalArgumentException("given paramter theta is not valid: "+e.getMessage());
+//		}
+//		
+//		this.theta = theta;
+//		assertClassInvariants();
+//	}
 	
 	public double getRadius() {
 		assertClassInvariants();
 		return radius;
 	}
 	
-	public void setRadius(double radius)  throws IllegalArgumentException {
-		assertClassInvariants();
-		
-		try {
-			assertRadiusValid(radius);
-		}
-		catch(IllegalStateException e) {
-			throw new IllegalArgumentException("given paramter radius is not valid: "+e.getMessage());
-		}
-		
-		this.radius = radius;
-		assertClassInvariants();
-	}
+//	public void setRadius(double radius)  throws IllegalArgumentException {
+//		assertClassInvariants();
+//		
+//		try {
+//			assertRadiusValid(radius);
+//		}
+//		catch(IllegalStateException e) {
+//			throw new IllegalArgumentException("given paramter radius is not valid: "+e.getMessage());
+//		}
+//		
+//		this.radius = radius;
+//		assertClassInvariants();
+//	}
 	
 	
-	public SphericCoordinate() {
+	private SphericCoordinate() {
 		setCoordinate(0,0,0);
 		assertClassInvariants();
 	}
 
-	public SphericCoordinate(double phi, double theta, double radius) throws IllegalArgumentException {
+	private SphericCoordinate(double phi, double theta, double radius) throws IllegalArgumentException {
 		try {
 			assertPhiValid(phi);
 			assertThetaValid(theta);
@@ -84,12 +89,34 @@ public class SphericCoordinate extends AbstractCoordinate {
 		assertClassInvariants();
 	}
 	
-	public SphericCoordinate(Coordinate coord) {
+	private SphericCoordinate(Coordinate coord) {
 		SphericCoordinate c = coord.asSphericCoordinate();
 		setCoordinate(c.phi, c.theta, c.radius);
 	}
 	
-	public void setCoordinate(double phi, double theta, double radius) throws IllegalArgumentException {	
+	public static SphericCoordinate getInstance() {
+		return getInstance(0,0,0);
+	}
+	
+	public static SphericCoordinate getInstance(Coordinate coord) {
+		return coord.asSphericCoordinate();
+	}
+	
+	public static SphericCoordinate getInstance(double phi, double theta, double radius) {
+		try {
+			assertPhiValid(phi);
+			assertThetaValid(theta);
+			assertRadiusValid(radius);
+		}
+		catch(IllegalStateException e) {
+			throw new IllegalArgumentException("a given parameter is not valid: "+e.getMessage());
+		}
+		
+		int hash = Objects.hash(phi, theta, radius);
+		return objects.computeIfAbsent(hash, key -> new SphericCoordinate(phi, theta, radius));
+	}
+	
+	private void setCoordinate(double phi, double theta, double radius) throws IllegalArgumentException {	
 		try {
 			assertPhiValid(phi);
 			assertThetaValid(theta);
@@ -120,7 +147,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 		
 		assertClassInvariants();
 		
-		return new CartesianCoordinate(x,y,z);
+		return CartesianCoordinate.getInstance(x,y,z);
 	}
 
 	@Override
