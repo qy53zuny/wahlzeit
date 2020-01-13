@@ -1,7 +1,14 @@
 package org.wahlzeit.model;
 
 import static org.junit.Assert.*;
+import org.wahlzeit.annotations.PatternInstance;
 
+@PatternInstance(
+		patternName = "Template Method",
+		participants = {
+				"Abstract Class", "Concrete Class"
+		}
+)
 public abstract class AbstractCoordinate implements Coordinate {
 
 	private static final double EPSILON = 0.001;
