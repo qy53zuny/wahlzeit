@@ -21,7 +21,8 @@ public class LandscapePhotoTest {
 		boolean isDay = true;
 		LandscapePhoto photo = new LandscapePhoto(type, weather, isDay);
 		
-		Assert.assertTrue(photo.getType().equals(type));
+		Assert.assertTrue(photo.getTypeName().equals(type));
+		Assert.assertTrue(photo.getType().getType().getName().equals(type));
 		Assert.assertTrue(photo.getWeather().equals(weather));
 		Assert.assertTrue(photo.isDay());
 		Assert.assertNotNull(photo.getId());
@@ -36,7 +37,7 @@ public class LandscapePhotoTest {
 		boolean isDay = true;
 		LandscapePhoto photo = new LandscapePhoto(id, type, weather, isDay);
 		
-		Assert.assertTrue(photo.getType().equals(type));
+		Assert.assertTrue(photo.getTypeName().equals(type));
 		Assert.assertTrue(photo.getWeather().equals(weather));
 		Assert.assertTrue(photo.isDay());
 		Assert.assertNotNull(photo.getId());

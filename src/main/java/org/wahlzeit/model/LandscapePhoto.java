@@ -8,9 +8,10 @@ public class LandscapePhoto extends Photo {
 	/**
 	 *
 	 */
-	private String type;
+	private Landscape type;
 	private String weather;
 	private boolean isDay;
+	private static LandscapeManager landscapeManager = LandscapeManager.getInstance();
 	
 	public LandscapePhoto() {
 		super();
@@ -20,31 +21,33 @@ public class LandscapePhoto extends Photo {
 		super(myId);
 	}
 	
-	public LandscapePhoto(String type, String weather, boolean isDay) throws IllegalArgumentException {
+	public LandscapePhoto(String typeName, String weather, boolean isDay) throws IllegalArgumentException {
 		super();
 		assertWeather(weather);
-		assertType(type);
-		this.setType(type);
+		this.setType(typeName);
 		this.setWeather(weather);
 		this.setDay(isDay);
 	}
 	
-	public LandscapePhoto(PhotoId myId, String type, String weather, boolean isDay) throws IllegalArgumentException {
+	public LandscapePhoto(PhotoId myId, String typeName, String weather, boolean isDay) throws IllegalArgumentException {
 		super(myId);
 		assertWeather(weather);
-		assertType(type);
-		this.setType(type);
+		this.setType(typeName);
 		this.setWeather(weather);
 		this.setDay(isDay);
 	}
 
-	public String getType() {
+	public String getTypeName() {
+		return type.getType().getName();
+	}
+	
+	public Landscape getType() {
 		return type;
 	}
 
-	public void setType(String type) throws IllegalArgumentException {
-		assertType(type);
-		this.type = type;
+	public void setType(String typeName) throws IllegalArgumentException {
+		assertType(typeName);
+		this.type = landscapeManager.createLandscape(typeName);
 	}
 
 	public String getWeather() {
@@ -65,9 +68,9 @@ public class LandscapePhoto extends Photo {
 	}
 	
 
-	protected void assertType(String type) throws IllegalArgumentException {
-		if(type == null) {
-			throw new IllegalArgumentException("type cannot be null");
+	protected void assertType(String typeName) throws IllegalArgumentException {
+		if(typeName == null) {
+			throw new IllegalArgumentException("type name cannot be null");
 		}
 	}
 	
